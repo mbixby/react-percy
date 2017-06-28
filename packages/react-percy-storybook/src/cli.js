@@ -8,7 +8,6 @@ import getRtlRegex from './getRtlRegex';
 import selectStories from './selectStories';
 import uploadStorybook from './uploadStorybook';
 
-import ApiClient from '@percy-io/react-percy-api-client';
 import createDebug from 'debug';
 
 import yargs from 'yargs';
@@ -63,7 +62,7 @@ export async function run(argv) {
   }
 
   const { storyHtml, assets, storybookJavascriptPath } = getStaticAssets(options);
-    // debug('assets %o', assets);
+  debug('assets %o', assets);
 
   const stories = await getStories(assets[storybookJavascriptPath], options);
   debug('stories %o', stories);
@@ -76,10 +75,5 @@ export async function run(argv) {
     return;
   }
 
-  const client = new ApiClient(
-      process.env.PERCY_TOKEN,
-      process.env.PERCY_API
-    );
-
-  return uploadStorybook(client, selectedStories, widths, minimumHeight, storyHtml, assets);
+  return uploadStorybook(null, selectedStories, widths, minimumHeight, storyHtml, assets);
 }
